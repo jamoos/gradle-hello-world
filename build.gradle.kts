@@ -9,10 +9,15 @@ plugins {
 
     // This creates a fat JAR
     id("com.github.johnrengelman.shadow") version "7.1.2"
+
+    // This will handle versioning - hopefully
+    id("pl.allegro.tech.build.axion-release") version "1.14.2"
+
 }
 
 group = "com.ido"
 description = "HelloWorld"
+version = "1.0.0"
 
 application.mainClass.set("com.ido.HelloWorld")
 tasks.jar {
