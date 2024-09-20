@@ -19,6 +19,11 @@ group = "com.ido"
 description = "HelloWorld"
 version = "1.0.0"
 
+scmVersion {
+    tag.prefix = "v" 
+    versionIncrementer 'incrementPatch'
+  }
+
 application.mainClass.set("com.ido.HelloWorld")
 tasks.jar {
     manifest {
