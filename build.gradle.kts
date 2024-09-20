@@ -21,7 +21,9 @@ version = "1.0.0"
 
 scmVersion {
     tag.prefix("v")
-    nextVersion = "SNAPSHOT"
+    nextVersion {
+      suffix="SNAPSHOT"
+    }
     versionIncrementer("incrementPatch")
   }
 
