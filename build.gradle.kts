@@ -20,8 +20,9 @@ description = "HelloWorld"
 version = "1.0.0"
 
 scmVersion {
-    tag.prefix = "v" 
-    versionIncrementer 'incrementPatch'
+    tag.prefix("v")
+    nextVersion = "SNAPSHOT"
+    versionIncrementer("incrementPatch")
   }
 
 application.mainClass.set("com.ido.HelloWorld")
