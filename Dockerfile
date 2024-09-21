@@ -2,7 +2,7 @@
 FROM ghcr.io/graalvm/native-image:ol8-java17-22.3.0 AS build
 WORKDIR /app
 COPY . .
-RUN ./gradlew nativeCompile --info
+RUN ./gradlew nativeCompile
 
 # Stage 2: Create a minimal runtime image
 FROM alpine:latest 
