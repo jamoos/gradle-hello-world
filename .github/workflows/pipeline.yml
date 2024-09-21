@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           
-          UPDATED_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
+          UPDATED_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')
 
           docker build -t jamoos/graal:latest \
                        -t jamoos/graal:$UPDATED_VERSION .
