@@ -19,15 +19,13 @@ plugins {
 
 group = "com.ido"
 description = "HelloWorld"
-version = "1.0.0"
 scmVersion {
-    tag.setPrefix("v") 
-    versionIncrementer("incrementPatch") 
-    git {
-        pushTags = true 
-        commitMessage = "[axion-release] Release version $version"
+    tag {
+        prefix.set("kepler-graal")
     }
 }
+
+project.version = scmVersion.version
 application.mainClass.set("com.ido.HelloWorld")
 tasks.jar {
     manifest {
