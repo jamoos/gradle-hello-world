@@ -23,7 +23,10 @@ tasks.register("printVersion") {
 repositories {
     mavenCentral()
 }
-
+// Ensure the manifest is generated before native image compilation
+tasks.named<org.graalvm.buildtools.gradle.tasks.NativeImage>("nativeCompile") {
+    dependsOn("processResources") 
+}
 graalvmNative {
     binaries {
         named("main") {
