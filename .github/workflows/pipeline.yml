@@ -10,27 +10,31 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      #
-      # - name: Set up JDK 17
-      #   uses: actions/setup-java@v3
-      #   with:
-      #     java-version: '17'
-      #     distribution: 'temurin'
-      #
-      # - name: Bump version (using axion-release)
-      #   run: ./gradlew incrementPatchVersion
-      #
-      # - name: Get the version
-      #   id: version
-      #   run: echo "version=$(./gradlew -q printVersion)" >> $GITHUB_OUTPUT
-      #
+
+      - name: Bump version
+        run: |
+          CURRENT_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{ $NF+=1; print }' OFS=".") 
+          sed -i "s/version = '$CURRENT_VERSION'/version = '$NEW_VERSION'/" build.gradle.kts
+          git config user.name "github-actions[bot]"
+          git config user.email "<>"
+          git add build.gradle.kts
+          git commit -m "Bump version to $NEW_VERSION [skip ci]"
+          git push
+      
+      - name: Checkout with updated version 
+        uses: actions/checkout@v3
+      
       - name: Build and push Docker image
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker build -t jamoos/graal:latest .
-                       # -t jamoos/graal:${{ steps.version.outputs.version }} .
+          
+          UPDATED_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
+
+          docker build -t jamoos/graal:latest \
+                       -t jamoos/graal:$UPDATED_VERSION .
           docker push jamoos/graal:latest
-          # docker push jamoos/graal:${{ steps.version.outputs.version }}
+          docker push jamoos/graal:$UPDATED_VERSION
