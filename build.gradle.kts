@@ -9,12 +9,6 @@ plugins {
 
     // This creates a fat JAR
     id("com.github.johnrengelman.shadow") version "7.1.2"
-
-    // // This will handle versioning - hopefully
-    //id("pl.allegro.tech.build.axion-release") version "1.14.2"
-
-   // id("dev.quiescence.plugins.versioning") version "0.1"
-	
 }
 
 group = "com.ido"
