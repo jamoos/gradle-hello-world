@@ -23,13 +23,13 @@ jobs:
           git push
       
       - name: Checkout with updated version 
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
       
       - name: Build JAR with Gradle
         run: ./gradlew jar
 
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v5
         with:
           name: helloworld
           path: build/libs/*.jar
