@@ -21,11 +21,6 @@ group = "com.ido"
 description = "HelloWorld"
 
 application.mainClass.set("com.ido.HelloWorld")
-// tasks.jar {
-//     manifest {
-//         attributes["Main-Class"] = "com.ido.HelloWorld" 
-//     }
-// }
 tasks.register("printVersion") {
     doLast {
         println(project.version)

@@ -5,10 +5,10 @@ This is a Hello World project that contains the most important parts of the Grad
 | Task                                            | Estimated | Status    | Time spent |
 |-------------------------------------------------|----------|----------|------------|
 | 1. Fork and understand the repository (research Gradle, Java, etc.) | 3        | Done     | 3          |
-| 2. Set up GitHub Actions workflow               | 2        | research | 0.5        |
+| 2. Set up GitHub Actions workflow               | 2        | Done | 1        |
 | 3. Modify code (add name, set version)         | 1        | name done, version needed   | 0.2        |
-| 4. Create multi-stage Dockerfile to: build, package, and create artifact in workflow | 2        | Almost   | 1          |
-| 5. Implement version increment in workflow      | 1        | pending  |            |
-| 7. Push Docker image to Docker Hub (in workflow) | 0.5      | pending  |            |
-| 8. Pull and run Docker image (locally, for testing) | 0.5      | pending  |            |
-| **Total**                                       | 10       |          | 4
+| 4. Create multi-stage Dockerfile to: build, package, and create artifact in workflow | 2  | Done | 4  |
+| 5. Implement version increment in workflow    | 1  | in progress  |  1  |
+| 7. Push Docker image to Docker Hub (in workflow) | 0.5  | done  | 1 |
+| 8. Pull and run Docker image (locally, for testing) | 0.5  | pending |  1    |
+| **Total**                                       | 10       |     ~9    | 
