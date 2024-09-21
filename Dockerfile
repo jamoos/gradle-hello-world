@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=build /app/build/native/nativeCompile/helloworld .
 RUN chmod +x helloworld
 
-ENTRYPOINT ["./helloworld"]
+ENTRYPOINT ["sh"]
