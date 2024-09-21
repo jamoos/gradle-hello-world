@@ -36,6 +36,9 @@ graalvmNative {
                 languageVersion.set(JavaLanguageVersion.of(17))
                 vendor.set(JvmVendorSpec.matching("GraalVM Community"))
             })
+            manifest {
+                attributes["Implementation-Version"] = project.version
+            }
         }
     }
 }
