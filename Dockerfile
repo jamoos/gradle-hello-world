@@ -10,6 +10,6 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY --from=build /app/build/native/nativeCompile/helloworld .
 RUN chmod +x helloworld
-RUN chown 1000:1000 hellworld
+RUN chown 1000:1000 helloworld
 
 ENTRYPOINT ["./helloworld"]
