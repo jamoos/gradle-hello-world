@@ -13,7 +13,7 @@ plugins {
 
 group = "com.ido"
 description = "HelloWorld"
-version = "1.0.7"
+version = "1.0.0"
 application.mainClass.set("com.ido.HelloWorld")
 tasks.register("printVersion") {
     doLast {
@@ -23,10 +23,7 @@ tasks.register("printVersion") {
 repositories {
     mavenCentral()
 }
-// Ensure the manifest is generated before native image compilation
-tasks.named<org.graalvm.buildtools.gradle.tasks.NativeImage>("nativeCompile") {
-    dependsOn("processResources") 
-}
+
 graalvmNative {
     binaries {
         named("main") {
@@ -39,9 +36,6 @@ graalvmNative {
                 languageVersion.set(JavaLanguageVersion.of(17))
                 vendor.set(JvmVendorSpec.matching("GraalVM Community"))
             })
-            manifest {
-                attributes["Implementation-Version"] = project.version
-            }
         }
     }
 }
