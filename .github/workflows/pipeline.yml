@@ -30,7 +30,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-          docker build -t jamoos/graal:latest \
+          docker build -t jamoos/graal:latest .
                        # -t jamoos/graal:${{ steps.version.outputs.version }} .
           docker push jamoos/graal:latest
           # docker push jamoos/graal:${{ steps.version.outputs.version }}
