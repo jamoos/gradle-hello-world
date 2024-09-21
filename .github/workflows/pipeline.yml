@@ -10,20 +10,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Bump version (using axion-release)
-        run: ./gradlew incrementPatchVersion
-
-      - name: Get the version
-        id: version
-        run: echo "version=$(./gradlew -q printVersion)" >> $GITHUB_OUTPUT
-
+      #
+      # - name: Set up JDK 17
+      #   uses: actions/setup-java@v3
+      #   with:
+      #     java-version: '17'
+      #     distribution: 'temurin'
+      #
+      # - name: Bump version (using axion-release)
+      #   run: ./gradlew incrementPatchVersion
+      #
+      # - name: Get the version
+      #   id: version
+      #   run: echo "version=$(./gradlew -q printVersion)" >> $GITHUB_OUTPUT
+      #
       - name: Build and push Docker image
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -31,6 +31,6 @@ jobs:
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker build -t jamoos/graal:latest \
-                       -t jamoos/graal:${{ steps.version.outputs.version }} .
+                       # -t jamoos/graal:${{ steps.version.outputs.version }} .
           docker push jamoos/graal:latest
-          docker push jamoos/graal:${{ steps.version.outputs.version }}
+          # docker push jamoos/graal:${{ steps.version.outputs.version }}
