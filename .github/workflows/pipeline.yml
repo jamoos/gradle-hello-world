@@ -25,15 +25,6 @@ jobs:
       - name: Checkout with updated version 
         uses: actions/checkout@v3
       
-      - name: Build JAR with Gradle
-        run: ./gradlew jar
-
-      - name: Upload JAR artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: helloworld
-          path: build/libs/*.jar
-
       - name: Build and push Docker image
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -47,3 +38,15 @@ jobs:
                        -t jamoos/graal:$UPDATED_VERSION .
           docker push jamoos/graal:latest
           docker push jamoos/graal:$UPDATED_VERSION
+
+      - name: Extract JAR
+        run: |
+          docker create --name extract-jar jamoos/graal:$UPDATED_VERSION
+          docker cp extract-jar:/app/build/libs/helloworld-$UPDATED_VERSION.jar ./helloworld.jar
+          docker rm extract-jar
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: helloworld
+          path: ./helloworld.jar
