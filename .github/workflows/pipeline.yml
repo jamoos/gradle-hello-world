@@ -12,8 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - id: version
       - name: Bump version
+        id: version
         run: |
           CURRENT_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
           NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{ $NF+=1; print }' OFS=".")\"
