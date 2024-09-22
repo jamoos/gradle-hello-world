@@ -16,7 +16,7 @@ jobs:
         id: bump-version
         run: |
           CURRENT_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
-          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{ $NF+=1; print }' OFS=".")
+          NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{ $NF+=1; print }' OFS=".")\"
           sed -i -E "s/version = $CURRENT_VERSION/version = $NEW_VERSION/" build.gradle.kts
           git config user.name "github-actions[bot]"
           git config user.email "<>"
