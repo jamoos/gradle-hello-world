@@ -13,7 +13,7 @@ plugins {
 
 group = "com.ido"
 description = "HelloWorld"
-version = "1.0.12"
+version = "1.0.13"
 application.mainClass.set("com.ido.HelloWorld")
 repositories {
     mavenCentral()
