@@ -22,9 +22,6 @@ jobs:
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git push
       
-      # - name: Checkout with updated version 
-      #   uses: actions/checkout@v3
-      
       - name: Build JAR with Gradle
         run: ./gradlew jar
 
