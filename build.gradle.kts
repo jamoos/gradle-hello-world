@@ -32,7 +32,8 @@ graalvmNative {
                 vendor.set(JvmVendorSpec.matching("GraalVM Community"))
             })
 
-            buildArgs.add("--initialize-at-build-time=com.ido.HelloWorld", "-Dapp.version=${project.version}")
+            buildArgs.add("-Dapp.version=${project.version}")
+            buildArgs.add("--initialize-at-build-time=com.ido.HelloWorld")
         }
     }
 }
