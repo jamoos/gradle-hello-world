@@ -25,11 +25,17 @@ The pipeline consists of three main jobs:
     *   Tags the image with both `latest` and the specific version number.
     *   Pushes the image to Docker Hub.
 
+4.  **`test-docker`**
+    *   Pulls the newly built Docker image from Docker Hub.
+    *   Runs the container and verifies that the output matches the expected message
+
+
 ### Key Features
 
 *   **Automated Versioning:** Ensures consistent and traceable version increments with each push to the `master` branch.
 *   **JAR Artifact:** Provides a readily available JAR file for deployment or other purposes.
 *   **Docker Image:** Creates a containerized version of the application for easy deployment and execution in various environments.
+*   **Automated Testing:** Verifies the correct behavior of the Dockerized application by checking its output.
 
 ### How to Run
 
