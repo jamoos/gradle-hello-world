@@ -15,11 +15,6 @@ group = "com.ido"
 description = "HelloWorld"
 version = "1.0.8"
 application.mainClass.set("com.ido.HelloWorld")
-tasks.register("printVersion") {
-    doLast {
-        println(project.version)
-    }
-}
 repositories {
     mavenCentral()
 }
