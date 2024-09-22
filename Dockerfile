@@ -5,11 +5,10 @@ COPY . .
 RUN ./gradlew nativeCompile --info
 
 # Stage 2: Create a minimal runtime image
-FROM alpine:latest 
-RUN apk add --no-cache libc6-compat
+FROM alpine:3.20.3
+RUN apk add --no-cache libc6-compat=1.2.2-r9
 WORKDIR /app
 COPY --from=build /app/build/native/nativeCompile/helloworld .
-RUN chmod +x helloworld
-RUN chown 1000:1000 helloworld
+RUN chmod +x helloworld && chown 1000:1000 helloworld
 USER 1000
 ENTRYPOINT ["./helloworld"]
