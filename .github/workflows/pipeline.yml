@@ -59,10 +59,11 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     needs: build-docker
+    env:
+      VERSION: ${{ needs.bump-version.outputs.NEW_VERSION }}
     steps:
       - name: Pull and run Docker image
         env:
-          VERSION: ${{ needs.bump-version.outputs.NEW_VERSION }}
           EXPECTED_OUTPUT: "Mr. K says: \"World, Hold on!\" (Version: $VERSION)"
         run: |
           docker pull jamoos/graal:$VERSION
