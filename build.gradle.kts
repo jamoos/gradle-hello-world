@@ -31,9 +31,6 @@ graalvmNative {
                 languageVersion.set(JavaLanguageVersion.of(17))
                 vendor.set(JvmVendorSpec.matching("GraalVM Community"))
             })
-
-            buildArgs.add("-H:Constant=APP_VERSION=${project.version}")
-            buildArgs.add("--initialize-at-build-time=com.ido.HelloWorld")
         }
     }
 }
