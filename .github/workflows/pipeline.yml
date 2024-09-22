@@ -25,8 +25,8 @@ jobs:
           git config user.email "<>"
           git add build.gradle.kts
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
-          git push BRANCH_NAME="version-bump/${{ github.run_id }}"
-          git checkout -b $BRANCH_NAME
+          git push origin $BRANCH_NAME
+
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "NEW_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" >> $GITHUB_OUTPUT
   
