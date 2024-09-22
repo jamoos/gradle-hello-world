@@ -23,8 +23,9 @@ jobs:
           git add build.gradle.kts
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git push
-          echo "::set-output name=NEW_VERSION::$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" 
-
+          #echo "::set-output name=NEW_VERSION::$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" 
+          ##try new methods for passing outputs as above is planned to be deprecated
+          echo "NEW_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" >> $GITHUB_OUTPUT
   build-artifact:
     runs-on: ubuntu-latest
     needs: bump-version 
@@ -33,7 +34,7 @@ jobs:
       - name: Build JAR with Gradle
         run: ./gradlew jar
       - name: Upload JAR artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: helloworld-${{ needs.bump-version.outputs.NEW_VERSION }}.jar
           path: build/libs/*.jar
