@@ -23,7 +23,7 @@ jobs:
           git add build.gradle.kts
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git push
-          echo "::set-output name=NEW_VERSION::$NEW_VERSION" 
+          echo "::set-output name=NEW_VERSION::$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" 
 
   build-artifact:
     runs-on: ubuntu-latest
