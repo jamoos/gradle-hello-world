@@ -1,14 +1,45 @@
-# gradle-hello-world
-# Java Hello World using the Gradle Wrapper and the Kotlin DSL
-This is a Hello World project that contains the most important parts of the Gradle build scripts.
+## Gradle Hello World Project with CI/CD Pipeline
 
-| Task                                            | Estimated | Status    | Time spent |
-|-------------------------------------------------|----------|----------|------------|
-| 1. Fork and understand the repository (research Gradle, Java, etc.) | 3        | Done     | 3          |
-| 2. Set up GitHub Actions workflow               | 2        | Done | 1        |
-| 3. Modify code (add name, set version)         | 1        | need to test version | 1 |
-| 4. Create multi-stage Dockerfile to: build, package, and create artifact in workflow | 2  | Done | 3  |
-| 5. Implement version increment in workflow    | 1  | Done  |  2  |
-| 7. Push Docker image to Docker Hub (in workflow) | 0.5  | done  | 1 |
-| 8. Pull and run Docker image (locally, for testing) | 0.5  | done |  0.5    |
-| **Total**                                       | 10       | maybe publish artifact to repo | 10 
+This repository demonstrates a basic Gradle project that produces a "Hello World" JAR file. Additionally, it includes a GitHub Actions CI/CD pipeline to automate the build, versioning, and Docker image creation process.
+
+### Project Structure
+
+*   **`src/main/java/com/ido/HelloWorld.java`**: Contains the main Java class that prints a greeting along with the application's version number.
+*   **`build.gradle.kts`**: Defines the Gradle build configuration, including dependencies, tasks, and the project version.
+*   **`.github/workflows/main.yml`**: Defines the GitHub Actions workflow for CI/CD.
+
+### CI/CD Pipeline
+
+The pipeline consists of three main jobs:
+
+1.  **`bump-version`**: 
+    *   Automatically increments the patch version in `build.gradle.kts`.
+    *   Commits and pushes the version change back to the repository.
+
+2.  **`build-artifact`**:
+    *   Builds the JAR file using Gradle.
+    *   Uploads the JAR as an artifact to GitHub Actions, named with the version number.
+
+3.  **`build-docker`**:
+    *   Builds a tiny Docker image using a multi-stage Dockerfile - leverages Graalvm native image and alpine.
+    *   Tags the image with both `latest` and the specific version number.
+    *   Pushes the image to Docker Hub.
+
+### Key Features
+
+*   **Automated Versioning:** Ensures consistent and traceable version increments with each push to the `master` branch.
+*   **JAR Artifact:** Provides a readily available JAR file for deployment or other purposes.
+*   **Docker Image:** Creates a containerized version of the application for easy deployment and execution in various environments.
+
+### How to Run
+
+1.  **Clone the repository:** `git clone https://github.com/<your-username>/gradle-hello-world.git`
+2.  **Build the project locally:** `./gradlew build`
+3.  **Run the JAR:** `java -jar build/libs/helloworld-<version>.jar`
+4.  **Trigger the CI/CD pipeline:** Push any changes to the `master` branch.
+5.  **Pull and run the Docker image:** 
+    *   `docker pull jamoos/graal:latest` or `docker pull jamoos/graal:<version>`
+    *   `docker run jamoos/graal:latest` or `docker run jamoos/graal:<version>`
+
+**Note:** Make sure you have Docker installed and have set up your Docker Hub credentials as secrets in your GitHub repository settings.
+
