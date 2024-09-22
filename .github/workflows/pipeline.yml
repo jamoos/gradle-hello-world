@@ -31,7 +31,7 @@ jobs:
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: helloworld
+          name: helloworld-${{ steps.bump-version.outputs.NEW_VERSION }}.jar
           path: build/libs/*.jar
 
       - name: Build and push Docker image
