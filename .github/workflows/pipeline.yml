@@ -5,12 +5,14 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  bump-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
-
+      - id: version
       - name: Bump version
         run: |
           CURRENT_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
@@ -21,24 +23,38 @@ jobs:
           git add build.gradle.kts
           git commit -m "Bump version to $NEW_VERSION [skip ci]"
           git push
+          echo "version=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" >> "$GITHUB_OUTPUT"
+
+  Build artifact:
+    runs-on: ubuntu-latest
+    needs: bump-version
+    steps:
       
+      - uses: actions/checkout@v4
       - name: Build JAR with Gradle
         run: ./gradlew jar
-
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
+        env:
+          VERSION: ${{ needs.bump-version.outputs.version }}
         with:
           name: helloworld-${{ steps.bump-version.outputs.NEW_VERSION }}.jar
           path: build/libs/*.jar
 
+  Build & Push Docker:
+    runs-on: ubuntu-latest
+    needs: bump-version
+    steps:
+      - uses: actions/checkout@v4
       - name: Build and push Docker image
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }} 
+          VERSION: ${{ needs.bump-version.outputs.version }}
         run: |
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           
-          UPDATED_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')
+          ##UPDATED_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')
 
           docker build -t jamoos/graal:latest \
                        -t jamoos/graal:$UPDATED_VERSION .
