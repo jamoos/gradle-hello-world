@@ -6,7 +6,7 @@ This repository demonstrates a basic Gradle project that produces a "Hello World
 
 *   **`src/main/java/com/ido/HelloWorld.java`**: Contains the main Java class that prints a greeting along with the application's version number.
 *   **`build.gradle.kts`**: Defines the Gradle build configuration, including dependencies, tasks, and the project version.
-*   **`.github/workflows/main.yml`**: Defines the GitHub Actions workflow for CI/CD.
+*   **`.github/workflows/pipeline.yml`**: Defines the GitHub Actions workflow for CI/CD.
 
 ### CI/CD Pipeline
 
