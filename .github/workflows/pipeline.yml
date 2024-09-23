@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       NEW_VERSION: ${{ steps.bump-version.outputs.NEW_VERSION }} 
-      BRANCH_NAME: version-bump/${{ github.run_id }}
 
     steps:
       - uses: actions/checkout@v4
@@ -19,25 +18,25 @@ jobs:
           CURRENT_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d "'")
           NEW_VERSION=$(echo $CURRENT_VERSION | awk -F. '{ $NF+=1; print }' OFS=".")\"
           sed -i -E "s/version = $CURRENT_VERSION/version = $NEW_VERSION/" build.gradle.kts
-          BRANCH_NAME="version-bump/${{ github.run_id }}"
-          git checkout -b $BRANCH_NAME
-          git config user.name "github-actions[bot]"
-          git config user.email "<>"
-          git add build.gradle.kts
-          git commit -m "Bump version to $NEW_VERSION [skip ci]"
-          git push origin $BRANCH_NAME
 
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "NEW_VERSION=$(grep "version =" build.gradle.kts | cut -d' ' -f3 | tr -d '"')" >> $GITHUB_OUTPUT
+      - name: Upload build.gradle.kts artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build.gradle.kts
+          path: build.gradle.kts
   
   build-artifact:
     runs-on: ubuntu-latest
     needs: bump-version 
     steps:
-      - name: Checkout with temp branch
+      - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Download build.gradle.kts artifact
+        uses: actions/download-artifact@v4
         with:
-          ref: ${{ needs.bump-version.outputs.BRANCH_NAME }}
+          name: build.gradle.kts
+          path: .
       - name: Build JAR with Gradle
         run: ./gradlew jar
       - name: Upload JAR artifact
@@ -50,10 +49,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: bump-version
     steps:
-      - name: Checkout temp branch
+      - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Download build.gradle.kts artifact
+        uses: actions/download-artifact@v4
         with:
-          ref: ${{ needs.bump-version.outputs.BRANCH_NAME }}
+          name: build.gradle.kts
+          path: .
       - name: Build and push Docker image
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -79,7 +81,6 @@ jobs:
           ACTUAL_OUTPUT=$(docker run --rm jamoos/graal:$VERSION)
           echo "Actual Output:"
           echo $ACTUAL_OUTPUT
-          # need to figure out why the version env var is not being parsed here...
 
           if [ "$ACTUAL_OUTPUT" = "$EXPECTED_OUTPUT" ]; then
             echo "Test passed: Output matches expected value."
@@ -95,9 +96,15 @@ jobs:
     if: needs.test-docker.result == 'success' 
     steps:
       - uses: actions/checkout@v4
+      - name: Download build.gradle.kts artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build.gradle.kts
+          path: .
       - name: Merge version bump branch into master
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "<>"
-          git merge ${{ needs.bump-version.outputs.BRANCH_NAME }}
-          git push origin master
+          git add build.gradle.kts
+          git commit -m "Bump version to ${{ needs.bump-version.outputs.NEW_VERSION }}"
+          git push`
