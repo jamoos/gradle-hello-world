@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Simple Pipeline :)
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   bump-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       NEW_VERSION: ${{ steps.bump-version.outputs.NEW_VERSION }} 
 
@@ -27,7 +27,7 @@ jobs:
           path: build.gradle.kts
   
   build-artifact:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: bump-version 
     steps:
       - name: Checkout branch
@@ -46,7 +46,7 @@ jobs:
           path: build/libs/*.jar
 
   build-docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: bump-version
     steps:
       - name: Checkout branch
@@ -69,7 +69,7 @@ jobs:
           docker push jamoos/graal:$VERSION
 
   test-docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [bump-version, build-docker]
     steps:
       - name: Pull and run Docker image
@@ -91,7 +91,7 @@ jobs:
             exit 1 
           fi
   commit-new-version: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [bump-version, build-artifact, build-docker, test-docker]
     if: needs.test-docker.result == 'success' 
     steps:
