@@ -106,5 +106,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "<>"
           git add build.gradle.kts
-          git commit -m "Bump version to ${{ needs.bump-version.outputs.NEW_VERSION }}"
+          git commit -m "Bump version to ${{ needs.bump-version.outputs.NEW_VERSION }} [skip ci]"
           git push`
