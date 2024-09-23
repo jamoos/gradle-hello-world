@@ -14,13 +14,15 @@ The pipeline consists of three main jobs:
 
 1.  **`bump-version`**: 
     *   Automatically increments the patch version in `build.gradle.kts`.
-    *   Commits and pushes the version change back to the repository.
+    *   Uploads the updated `build.gradle.kts` as an artifact.
 
 2.  **`build-artifact`**:
+    *   Downloads the updated `build.gradle.kts` artifact.
     *   Builds the JAR file using Gradle.
     *   Uploads the JAR as an artifact to GitHub Actions, named with the version number.
 
 3.  **`build-docker`**:
+    *   Downloads the updated `build.gradle.kts` artifact.
     *   Builds a tiny Docker image using a multi-stage Dockerfile - leverages Graalvm native image and alpine.
     *   Tags the image with both `latest` and the specific version number.
     *   Pushes the image to Docker Hub.
@@ -28,14 +30,19 @@ The pipeline consists of three main jobs:
 4.  **`test-docker`**
     *   Pulls the newly built Docker image from Docker Hub.
     *   Runs the container and verifies that the output matches the expected message
-
+5.  **`commit-new-version`**
+    *   Commits the version bump in `build.gradle.kts` to the `master` branch only if all previous jobs, including `test-docker`, have succeeded
 
 ### Key Features
 
 *   **Automated Versioning:** Ensures consistent and traceable version increments with each push to the `master` branch.
 *   **JAR Artifact:** Provides a readily available JAR file for deployment or other purposes.
 *   **Docker Image:** Creates a containerized version of the application for easy deployment and execution in various environments.
+*   **Non-Root User:** The Docker image is configured to run as a non-root user for improved security.
 *   **Automated Testing:** Verifies the correct behavior of the Dockerized application by checking its output.
+*   **Conditional Commit:** The version bump is committed only after successful testing, ensuring code quality.
+
+### How to Run
 
 ### How to Run
 
