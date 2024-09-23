@@ -44,8 +44,6 @@ The pipeline consists of three main jobs:
 
 ### How to Run
 
-### How to Run
-
 1.  **Clone the repository:** `git clone https://github.com/<your-username>/gradle-hello-world.git`
 2.  **Build the project locally:** `./gradlew build`
 3.  **Run the JAR:** `java -jar build/libs/helloworld-<version>.jar`
