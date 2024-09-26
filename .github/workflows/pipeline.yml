@@ -75,7 +75,7 @@ jobs:
       - name: Pull and run Docker image
         env:
           VERSION: ${{ needs.bump-version.outputs.NEW_VERSION }}
-          EXPECTED_OUTPUT: "Mr. K says: \"World, Hold on!\""
+          EXPECTED_OUTPUT: "Mr. K says: \"World, Dont Hold on!\""
         run: |
           docker pull jamoos/graal:$VERSION
           ACTUAL_OUTPUT=$(docker run --rm jamoos/graal:$VERSION)
